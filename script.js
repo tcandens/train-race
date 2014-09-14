@@ -18,10 +18,32 @@ Railway = function(name) {
     this.revenue += amount;
   };
   // Initializes company supply stock, and can then be reused
-  this.setSupplies = function(wood, steel, labor) {
-    this.supplies.wood = wood;
-    this.supplies.steel = steel;
-    this.supplies.labor = labor;
+  this.setSupplies = function(orderObject) {
+    this.supplies.wood = orderObject['wood'];
+    this.supplies.steel = orderObject['steel'];
+    this.supplies.labor = orderObject['labor'];
+  };
+  // Method for making orders that check if total cost of order exceeds available revenue
+  // And then increments each order item down until cost is met
+  this.makeOrder = function(orderObject) {
+    var totalCost = 0;
+    // Calculate totalCost of original order
+    for ( key in orderObject ) {
+      totalCost += orderObject[key] * Materials[key].price;
+    };
+    // When order exceeds revenue, increment order items downward and recalculate total cost
+    while ( totalCost > this.revenue ) {
+      console.log("Your order is to large!");
+      for ( key in orderObject ) {
+        orderObject[key] -= 1;
+        console.log(orderObject[key]);
+        totalCost -= Materials[key].price;
+        console.log(totalCost);
+      };
+    };
+    // Assign supplies and subtract order
+    this.adjustRevenue(-totalCost);
+    this.setSupplies(orderObject);
   };
 };
 
@@ -32,6 +54,13 @@ Material = function(name, price, consumptionRate) {
   this.consumptionRate = consumptionRate;
 };
 
+// Generic order with an indexed array passes as an argument
+Order = function(array) {
+  this.wood = array[0];
+  this.steel = array[1];
+  this.labor = array[2];
+}
+
 // Create material properties within object
 var Materials = new Object();
 Materials.wood = new Material("wood",5,100);
@@ -41,26 +70,32 @@ Materials.labor = new Material("labor",100,0);
 // Create object for Race holding all major methods
 var Race = new Object();
 // Initiate main players company
-Race.buildCompany = function() {
+Race.buildPlayer = function() {
   // Pick which company
   var companyName = prompt("Whats your companies name?");
-  // Pick supplies
-  var woodStock = prompt("How much wood?");
-  var steelStock = prompt("How much steel?");
-  var laborStock = prompt("How many workers?");
+  //
+  var companyOrder = []
+  companyOrder[0] = prompt("How much wood?");
+  companyOrder[1] = prompt("How much steel?");
+  companyOrder[2] = prompt("How many workers?");
+  // Create order object
+  var order = new Order(companyOrder);
   // Build company
   Player = new Railway(companyName);
   // Grant contract deposit
   Player.adjustRevenue(Route.contractDeposit);
+
+  Player.makeOrder(order);
+
   // Set Supplies
-  Player.setSupplies(woodStock,steelStock,laborStock);
-  var totalCost = 0;
-  // Loop through each material and add its cost to totalCost
-  for ( key in Materials ) {
-    totalCost += Materials[key].price * Player.supplies[key];
-  };
-  // Subtract total cost of supply order from base revenue
-  Player.adjustRevenue(-totalCost);
+  // Player.setSupplies(companyOrder[0],companyOrder[1],companyOrder[2]);
+  // var totalCost = 0;
+  // // Loop through each material and add its cost to totalCost
+  // for ( key in Materials ) {
+  //   totalCost += Materials[key].price * Player.supplies[key];
+  // };
+  // // Subtract total cost of supply order from base revenue
+  // Player.adjustRevenue(-totalCost);
 };
 
 // Initiate opponent company
@@ -68,7 +103,28 @@ Race.buildOpponent = function() {
   // Name company
   var opponentName = "Central"
   Opponent = new Railway(opponentName);
-}
+  // Grant contract deposit
+  Opponent.adjustRevenue(Route.contractDeposit);
+  // Select amount of supplies to order based on Players order plus/minus a randomized coeffient
+  for ( key in Player.supplies ) {
+    // (#0-99)
+    var rand = Math.random();
+    // Switch that decides whether to increment up or down
+    var plusMinus = Math.round(Math.random());
+    if ( plusMinus ) {
+      Opponent.supplies[key] = Math.floor(Player.supplies[key] * ( 1 + rand ));
+    } else {
+      Opponent.supplies[key] = Math.floor(Player.supplies[key] * ( 1 - rand ));
+    };
+  };
+  // Calculate totalCost of order
+  var totalCost = 0;
+  for ( key in Materials ) {
+    totalCost += Materials[key].price * Opponent.supplies[key];
+  };
+  // Subtract totalCost from Opponent revenue
+  Opponent.adjustRevenue(-totalCost);
+};
 
 
 // Generic object for basic race route information
@@ -82,7 +138,3 @@ var Route = {
 // Create Object to reference HTML elements and Classes
 // Assets{}...
 var Assets = new Object();
-Assets.intro = document.getElementById('intro');
-Assets.intro.innerHTML = Route.distance + " " + Route.unit
-// var intro = document.getElementById('intro');
-// intro.innerHTML = Route.distance
