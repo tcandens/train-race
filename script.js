@@ -73,7 +73,7 @@ var Race = new Object();
 Race.buildPlayer = function() {
   // Pick which company
   var companyName = prompt("Whats your companies name?");
-  //
+  // Build order array
   var companyOrder = []
   companyOrder[0] = prompt("How much wood?");
   companyOrder[1] = prompt("How much steel?");
@@ -86,16 +86,6 @@ Race.buildPlayer = function() {
   Player.adjustRevenue(Route.contractDeposit);
 
   Player.makeOrder(order);
-
-  // Set Supplies
-  // Player.setSupplies(companyOrder[0],companyOrder[1],companyOrder[2]);
-  // var totalCost = 0;
-  // // Loop through each material and add its cost to totalCost
-  // for ( key in Materials ) {
-  //   totalCost += Materials[key].price * Player.supplies[key];
-  // };
-  // // Subtract total cost of supply order from base revenue
-  // Player.adjustRevenue(-totalCost);
 };
 
 // Initiate opponent company
@@ -105,16 +95,29 @@ Race.buildOpponent = function() {
   Opponent = new Railway(opponentName);
   // Grant contract deposit
   Opponent.adjustRevenue(Route.contractDeposit);
+  // REDO TO INCLUDE .makeOrder()
   // Select amount of supplies to order based on Players order plus/minus a randomized coeffient
-  for ( key in Player.supplies ) {
-    // (#0-99)
+  for ( key in Materials ) {
     var rand = Math.random();
+    // Empty order array
+    var oppOrder = [];
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
     if ( plusMinus ) {
-      Opponent.supplies[key] = Math.floor(Player.supplies[key] * ( 1 + rand ));
+      for ( i=0; i<=2; i++) {
+        // Fill in order array
+        oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 + rand ));
+        // Build new order
+        var order = new Order(oppOrder);
+        // Submit order
+        Opponent.makeOrder(order);
+      };
     } else {
-      Opponent.supplies[key] = Math.floor(Player.supplies[key] * ( 1 - rand ));
+      for ( i=0; i<2; i++) {
+        oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 - rand));
+        var order = new Order(oppOrder);
+        Opponent.makeOrder(order);
+      };
     };
   };
   // Calculate totalCost of order
