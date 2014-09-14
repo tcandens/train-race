@@ -50,13 +50,25 @@ Railway = function(name) {
     this.adjustRevenue(-totalCost);
     this.setSupplies(orderObject);
   };
+
+  // Check to see if supplies are depleted
+  this.checkSupplies = function() {
+    for ( key in this.supplies ) {
+      if ( this.supplies[key] > 0) {
+        return true;
+      } else {
+        return false;
+        break;
+      };
+    };
+  };
 };
 
 // Constructor for building materials
 Material = function(name, price, consumptionRate) {
   this.name = name;
-  this.price = price;
-  this.consumptionRate = consumptionRate;
+  this.price = price; // Price per unit
+  this.consumptionRate = consumptionRate; // The amount of material needed to build one mile of track
 };
 
 // Generic order with an indexed array passes as an argument
@@ -135,12 +147,80 @@ Race.buildOpponent = function() {
   Opponent.adjustRevenue(-totalCost);
 };
 
+// Main Race Method | Takes bother Player and Opponent objects as arguments
+Race.initRace = function (player, opponent) {
+  // Assign objects to arguments
+  var player = player;
+  var opponent = opponent;
+  // Both players progress
+  var progress = function() {
+    return player.currentMiles + opponent.currentMiles;
+  };
+  // Find material properties
+  var wood = Materials['wood'];
+  var steel = Materials['steel'];
+  var labor = Materials['labor'];
+
+  // Check players have not converged
+  while ( progress() < Route.distance ) {
+
+    // Run loop for at least the length of Route.distance
+    for ( i = 0; i < Route.distance; i++ ) {
+      if ( player.checkSupplies() && opponent.checkSupplies() ) {
+        // Build one mile for player
+        for ( key in Materials ) {
+          // Subtract amount of supply used to make one mile of track
+          player.supplies[key] -= Materials[key].consumptionRate;
+          opponent.supplies[key] -= Materials[key].consumptionRate;
+          // Subtract price of material just used
+          var cost = Materials[key].consumptionRate * Materials[key].price;
+          player.adjustRevenue(cost);
+          opponent.adjustRevenue(cost);
+          // Advance player
+          player.currentMiles++;
+          opponent.currentMiles++;
+          // Update progress
+          return progress();
+        };
+      // When player runs out of supplies but opponent continues
+      } else if ( player.checkSupplies() == false && opponent.checkSupplies() == true ) {
+        // Loop through materials
+        for ( key in Materials ) {
+          // Build a mile for opponent
+          opponent.supplies[key] -= Materials[key].consumptionRate;
+          // Subtract cost of mile from opponent bank
+          var cost = Materials[key].consumptionRate * Materials[key].price;
+          opponent.adjustRevenue(cost);
+          // Update progress
+          return progress();
+        };
+        // When opponent depletes supplies but Player continues
+      } else if ( player.checkSupplies() == true && opponent.checkSupplies() == false ) {
+        // Loop through materials
+        for ( key in Materials ) {
+          // Build mile for player
+          player.supplies[key] -= Materials[key].consumptionRate;
+          // Subtract cost of mile
+          var cost = Materials[key].consumptionRate * Materials[key].price;
+          player.adjustRevenue(cost);
+          // Update progress
+          return progress();
+        };
+      } else if ( player.checkSupplies() == false && opponent.checkSupplies() == false ) {
+          // See whats up
+          return progress();
+      };
+    };
+  };
+};
+
 
 // Generic object for basic race route information
 var Route = {
   distance: 1900,
   unit: "miles",
-  contractDeposit: 20000
+  contractDeposit: 20000,
+  mileReward: 10
 };
 
 
