@@ -63,6 +63,13 @@ Race.buildCompany = function() {
   Player.adjustRevenue(-totalCost);
 };
 
+// Initiate opponent company
+Race.buildOpponent = function() {
+  // Name company
+  var opponentName = "Central"
+  Opponent = new Railway(opponentName);
+}
+
 
 // Generic object for basic race route information
 var Route = {
@@ -73,4 +80,9 @@ var Route = {
 
 
 // Create Object to reference HTML elements and Classes
-// Assets[]...
+// Assets{}...
+var Assets = new Object();
+Assets.intro = document.getElementById('intro');
+Assets.intro.innerHTML = Route.distance + " " + Route.unit
+// var intro = document.getElementById('intro');
+// intro.innerHTML = Route.distance
