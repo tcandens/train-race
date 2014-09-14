@@ -1,0 +1,22 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font: 1.4em/1.7 serif;
+  color: rgba(60,40,40,1);
+  background-image: url(meeting.jpg);
+  background-size: cover;
+}
+.intro {
+  margin: 0 auto;
+  padding: 1em 0.7em 1.5em 0.7em;
+  max-width: 32em;
+  background: rgba(255,255,255,0.6);
+}
+.intro h1 {
+  font: 2em/1 sans-serif;
+}
+.intro p {
+  text-indent: 2em;
+}
