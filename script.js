@@ -13,9 +13,11 @@ Railway = function(name) {
   this.adjustMiles = function(amount) {
     this.currentMiles += amount;
   };
+  // Adjusts the amount of revenue either up or down
   this.adjustRevenue = function(amount) {
     this.revenue += amount;
   };
+  // Initializes company supply stock, and can then be reused
   this.setSupplies = function(wood, steel, labor) {
     this.supplies.wood = wood;
     this.supplies.steel = steel;
