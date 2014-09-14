@@ -35,10 +35,15 @@ Railway = function(name) {
     while ( totalCost > this.revenue ) {
       console.log("Your order is to large!");
       for ( key in orderObject ) {
-        orderObject[key] -= 1;
-        console.log(orderObject[key]);
-        totalCost -= Materials[key].price;
-        console.log(totalCost);
+        // Make sure inventory is >= 0
+        if ( orderObject[key] > 0 ) {
+          orderObject[key] -= 1;
+          console.log(orderObject[key]);
+          totalCost -= Materials[key].price;
+          console.log(totalCost);
+        } else if ( orderObject[key] == 0 ) {
+          orderObject[key] = 0;
+        };
       };
     };
     // Assign supplies and subtract order
