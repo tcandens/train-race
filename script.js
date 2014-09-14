@@ -103,7 +103,6 @@ Race.buildOpponent = function() {
   // REDO TO INCLUDE .makeOrder()
   // Select amount of supplies to order based on Players order plus/minus a randomized coeffient
   for ( key in Materials ) {
-    var rand = Math.random();
     // Empty order array
     var oppOrder = [];
     // Switch that decides whether to increment up or down
@@ -111,6 +110,7 @@ Race.buildOpponent = function() {
     if ( plusMinus ) {
       for ( i=0; i<=2; i++) {
         // Fill in order array
+        var rand = Math.random();
         oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 + rand ));
         // Build new order
         var order = new Order(oppOrder);
@@ -119,6 +119,7 @@ Race.buildOpponent = function() {
       };
     } else {
       for ( i=0; i<2; i++) {
+        var rand = Math.random();
         oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 - rand));
         var order = new Order(oppOrder);
         Opponent.makeOrder(order);
