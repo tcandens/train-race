@@ -8,15 +8,38 @@ html {
   background-image: url(meeting.jpg);
   background-size: cover;
 }
-.intro {
+section {
   margin: 0 auto;
   padding: 1em 0.7em 1.5em 0.7em;
   max-width: 32em;
   background: rgba(255,255,255,0.6);
 }
-.intro h1 {
+section h1 {
   font: 2em/1 sans-serif;
 }
-.intro p {
+section p {
   text-indent: 2em;
+}
+
+/* Button classes */
+button {
+  display: block;
+  padding: 0.2em;
+  font: 1.2em/1 sans-serif;
+  color: coral;
+  background: white;
+  border: 2px solid coral;
+}
+button.center {
+  margin: 0 auto;
+}
+
+/* Helper classes for toggling visibility */
+.visible {
+  display: block;
+  visibility: visible;
+}
+.hidden {
+  display: none;
+  visibility: hidden;
 }

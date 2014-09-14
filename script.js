@@ -50,15 +50,25 @@ Race.buildCompany = function() {
   var laborStock = prompt("How many workers?");
   // Build company
   Player = new Railway(companyName);
+  // Grant contract deposit
+  Player.adjustRevenue(Route.contractDeposit);
   // Set Supplies
   Player.setSupplies(woodStock,steelStock,laborStock);
+  var totalCost = 0;
+  // Loop through each material and add its cost to totalCost
+  for ( key in Materials ) {
+    totalCost += Materials[key].price * Player.supplies[key];
+  };
+  // Subtract total cost of supply order from base revenue
+  Player.adjustRevenue(-totalCost);
 };
 
 
 // Generic object for basic race route information
 var Route = {
   distance: 1900,
-  unit: "miles"
+  unit: "miles",
+  contractDeposit: 20000
 };
 
 
