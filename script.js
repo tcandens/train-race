@@ -89,7 +89,7 @@ var Race = new Object();
 // Initiate main players company
 Race.buildPlayer = function() {
   // Pick which company
-  var companyName = prompt("Whats your companies name?");
+  // var companyName = prompt("Whats your companies name?");
   // Build order array
   var companyOrder = []
   companyOrder[0] = prompt("How much wood?");
@@ -98,53 +98,72 @@ Race.buildPlayer = function() {
   // Create order object
   var order = new Order(companyOrder);
   // Build company
-  Player = new Railway(companyName);
+  Player = new Railway("jt");
   // Grant contract deposit
   Player.adjustRevenue(Route.contractDeposit);
 
   Player.makeOrder(order);
+  console.log(Player.supplies);
 };
 
 // Initiate opponent company
 Race.buildOpponent = function() {
   // Name company
   var opponentName = "Central"
+  var oppOrder = [];
   Opponent = new Railway(opponentName);
   // Grant contract deposit
   Opponent.adjustRevenue(Route.contractDeposit);
-  // REDO TO INCLUDE .makeOrder()
   // Select amount of supplies to order based on Players order plus/minus a randomized coeffient
-  for ( key in Materials ) {
-    // Empty order array
-    var oppOrder = [];
+  // Loop through the number of materials in Players supply
+  for ( i = 0; i < Object.keys(Player.supplies).length; i++ ) {
+
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
+    var rand = Math.random()
+    console.log("accessed " + Object.keys(Player.supplies)[i] );
+
+    // Build order array
     if ( plusMinus ) {
-      for ( i=0; i<=2; i++) {
-        // Fill in order array
-        var rand = Math.random();
-        oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 + rand ));
-        // Build new order
-        var order = new Order(oppOrder);
-        // Submit order
-        Opponent.makeOrder(order);
-      };
+      oppOrder[i] = Math.floor(Object.keys(Player.supplies)[i] * ( 1 + rand ));
+      console.log(oppOrder[i]);
     } else {
-      for ( i=0; i<2; i++) {
-        var rand = Math.random();
-        oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 - rand));
-        var order = new Order(oppOrder);
-        Opponent.makeOrder(order);
-      };
+      oppOrder[i] = Math.floor(Object.keys(Player.supplies)[i] * ( 1 - rand ));
+      console.log(oppOrder[i]);
     };
   };
-  // Calculate totalCost of order
-  var totalCost = 0;
-  for ( key in Materials ) {
-    totalCost += Materials[key].price * Opponent.supplies[key];
-  };
-  // Subtract totalCost from Opponent revenue
-  Opponent.adjustRevenue(-totalCost);
+
+  // Build order object from order array
+  var order = new Order(oppOrder);
+  // Submit order
+  Opponent.makeOrder(order);
+  console.log(Opponent.supplies);
+
+    // if ( plusMinus ) {
+    //   for ( i=0; i<=2; i++) {
+    //     // Fill in order array
+    //     var rand = Math.random();
+    //     oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 + rand ));
+    //     // Build new order
+    //     var order = new Order(oppOrder);
+    //     // Submit order
+    //     Opponent.makeOrder(order);
+    //   };
+    // } else {
+    //   for ( i=0; i<2; i++) {
+    //     var rand = Math.random();
+    //     oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 - rand));
+    //     var order = new Order(oppOrder);
+    //     Opponent.makeOrder(order);
+    //   };
+    // };
+  // // Calculate totalCost of order
+  // var totalCost = 0;
+  // for ( key in Materials ) {
+  //   totalCost += Materials[key].price * Opponent.supplies[key];
+  // };
+  // // Subtract totalCost from Opponent revenue
+  // Opponent.adjustRevenue(-totalCost);
 };
 
 // Main Race Method | Takes bother Player and Opponent objects as arguments
