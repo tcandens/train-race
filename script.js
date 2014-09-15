@@ -121,12 +121,14 @@ Race.buildOpponent = function() {
     var supply = Player.supplies[key];
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
-    var rand = Math.random()
-    console.log("accessed " + Player.supplies[key] );
+    var rand = Math.random();
+
+    console.log("Player has " + supply);
 
     // Build order array
     if ( plusMinus ) {
-      switch ( supply ) {
+      console.log("Plus!")
+      switch ( key ) {
         case "wood":
           oppOrder[0] = Math.floor(supply * ( 1 + rand ));
           console.log(oppOrder[0])
@@ -141,7 +143,8 @@ Race.buildOpponent = function() {
           break;
       };
     } else {
-      switch ( supply ) {
+      console.log("Minus!");
+      switch ( key ) {
         case "wood":
           oppOrder[0] = Math.floor(supply * ( 1 - rand ));
           console.log(oppOrder[0])
@@ -161,6 +164,7 @@ Race.buildOpponent = function() {
   // Build order object from order array
   var order = new Order(oppOrder);
   // Submit order
+  console.log(oppOrder);
   Opponent.makeOrder(order);
   console.log(Opponent.supplies);
 
