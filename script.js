@@ -167,36 +167,10 @@ Race.buildOpponent = function() {
   console.log(oppOrder);
   Opponent.makeOrder(order);
   console.log(Opponent.supplies);
-
-    // if ( plusMinus ) {
-    //   for ( i=0; i<=2; i++) {
-    //     // Fill in order array
-    //     var rand = Math.random();
-    //     oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 + rand ));
-    //     // Build new order
-    //     var order = new Order(oppOrder);
-    //     // Submit order
-    //     Opponent.makeOrder(order);
-    //   };
-    // } else {
-    //   for ( i=0; i<2; i++) {
-    //     var rand = Math.random();
-    //     oppOrder[i] = Math.floor(Player.supplies[key] * ( 1 - rand));
-    //     var order = new Order(oppOrder);
-    //     Opponent.makeOrder(order);
-    //   };
-    // };
-  // // Calculate totalCost of order
-  // var totalCost = 0;
-  // for ( key in Materials ) {
-  //   totalCost += Materials[key].price * Opponent.supplies[key];
-  // };
-  // // Subtract totalCost from Opponent revenue
-  // Opponent.adjustRevenue(-totalCost);
 };
 
 // Main Race Method | Takes bother Player and Opponent objects as arguments
-Race.initRace = function (player, opponent) {
+Race.start = function (player, opponent) {
   // Assign objects to arguments
   var player = player;
   var opponent = opponent;
