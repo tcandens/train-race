@@ -54,14 +54,29 @@ Railway = function(name) {
   // Check to see if supplies are depleted
   this.checkSupplies = function() {
     for ( key in this.supplies ) {
-      if ( this.supplies[key] > 0) {
-        return true;
-      } else {
+      if ( this.supplies[key] <= 0) {
         return false;
         break;
+      } else {
+        return true;
       };
     };
   };
+
+  // For building one mile of track. First, checks if supplies are depleted
+  this.buildMile = function() {
+    if ( this.checkSupplies() ) {
+      for ( key in this.supplies ) {
+        this.supplies[key] -= Materials[key].consumptionRate;
+      };
+      this.currentMiles++;
+      this.adjustRevenue(Route.mileReward);
+      return true;
+    } else {
+      return false;
+    };
+  };
+
 };
 
 // Constructor for building materials
