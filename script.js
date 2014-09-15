@@ -184,15 +184,16 @@ Race.buildOpponent = function() {
   console.log(Opponent.supplies);
 };
 
+// Race method to check progress. Sum of players current miles
+Race.progress = function () {
+  return Player.currentMiles + Opponent.currentMiles;
+};
+
 // Main Race Method | Takes bother Player and Opponent objects as arguments
 Race.start = function (player, opponent) {
   // Assign objects to arguments
   var player = player;
   var opponent = opponent;
-  // Both players progress
-  var progress = function() {
-    return player.currentMiles + opponent.currentMiles;
-  };
   // Find material properties
   var wood = Materials['wood'];
   var steel = Materials['steel'];
