@@ -116,20 +116,45 @@ Race.buildOpponent = function() {
   Opponent.adjustRevenue(Route.contractDeposit);
   // Select amount of supplies to order based on Players order plus/minus a randomized coeffient
   // Loop through the number of materials in Players supply
-  for ( i = 0; i < Object.keys(Player.supplies).length; i++ ) {
+  for ( key in Player.supplies ) {
 
+    var supply = Player.supplies[key];
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
     var rand = Math.random()
-    console.log("accessed " + Object.keys(Player.supplies)[i] );
+    console.log("accessed " + Player.supplies[key] );
 
     // Build order array
     if ( plusMinus ) {
-      oppOrder[i] = Math.floor(Object.keys(Player.supplies)[i] * ( 1 + rand ));
-      console.log(oppOrder[i]);
+      switch ( supply ) {
+        case "wood":
+          oppOrder[0] = Math.floor(supply * ( 1 + rand ));
+          console.log(oppOrder[0])
+          break;
+        case 'steel':
+          oppOrder[1] = Math.floor(supply * ( 1 + rand ));
+          console.log(oppOrder[1])
+          break;
+        case 'labor':
+          oppOrder[2] = Math.floor(supply * ( 1 + rand ));
+          console.log(oppOrder[2])
+          break;
+      };
     } else {
-      oppOrder[i] = Math.floor(Object.keys(Player.supplies)[i] * ( 1 - rand ));
-      console.log(oppOrder[i]);
+      switch ( supply ) {
+        case "wood":
+          oppOrder[0] = Math.floor(supply * ( 1 - rand ));
+          console.log(oppOrder[0])
+          break;
+        case 'steel':
+          oppOrder[1] = Math.floor(supply * ( 1 - rand ));
+          console.log(oppOrder[1])
+          break;
+        case 'labor':
+          oppOrder[2] = Math.floor(supply * ( 1 - rand ));
+          console.log(oppOrder[2])
+          break;
+      };
     };
   };
 
