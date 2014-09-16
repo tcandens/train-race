@@ -93,9 +93,9 @@ Order = function(array) {
 
 // Create material properties within object
 var Materials = new Object();
-Materials.wood = new Material("wood",5,100);
-Materials.steel = new Material("steel",10,50);
-Materials.labor = new Material("labor",100,0);
+Materials.wood = new Material("wood",5,10);
+Materials.steel = new Material("steel",10,5);
+Materials.labor = new Material("labor",100,0.002);
 
 // Create object for Race holding all major methods
 var Race = new Object();
@@ -208,7 +208,7 @@ Race.run = function () {
 };
 
 Race.init = function () {
-  this.buildPlayer("Eastern", 1000,1200,10);
+  this.buildPlayer("Eastern", 10000,12000,100);
   this.buildOpponent();
   this.run();
 }
@@ -219,8 +219,8 @@ Race.init = function () {
 var Route = {
   distance: 1900,
   unit: "miles",
-  contractDeposit: 20000,
-  mileReward: 10
+  contractDeposit: 2000000,
+  mileReward: 100
 };
 
 
