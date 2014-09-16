@@ -56,6 +56,7 @@ Railway = function(name) {
     for ( key in this.supplies ) {
       if ( this.supplies[key] <= Materials[key].consumptionRate ) {
         return false;
+        break;
       } else {
         return true;
       };
