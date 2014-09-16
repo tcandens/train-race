@@ -36,10 +36,11 @@ Railway = function(name) {
       for ( key in orderObject ) {
         // Make sure inventory is >= 0
         if ( orderObject[key] > 0 ) {
-          orderObject[key] -= 1;
-          console.log(orderObject[key]);
+          // Increment order amount down by unit or rate
+          orderObject[key] -= Materials[key].consumptionRate;
+          // console.log(orderObject[key]);
           totalCost -= Materials[key].price;
-          console.log(totalCost);
+          // console.log(totalCost);
         } else if ( orderObject[key] == 0 ) {
           orderObject[key] = 0;
         };
@@ -90,12 +91,6 @@ Order = function(array) {
   this.steel = array[1];
   this.labor = array[2];
 }
-
-// Create material properties within object
-var Materials = new Object();
-Materials.wood = new Material("wood",5,10);
-Materials.steel = new Material("steel",10,5);
-Materials.labor = new Material("labor",100,0.002);
 
 // Create object for Race holding all major methods
 var Race = new Object();
@@ -216,19 +211,27 @@ Race.run = function () {
 };
 
 Race.init = function () {
-  this.buildPlayer("Eastern", 10000,12000,100);
+  var wood = prompt("Wood?");
+  var steel = prompt("Steel?");
+  var labor = prompt("Labor?");
+  this.buildPlayer("Eastern", wood,steel,labor);
   this.buildOpponent();
   this.run();
 }
 
-
+// Create material properties within object
+// new Material(NAME, PRICE, RATE)
+var Materials = new Object();
+Materials.wood = new Material("wood",1,100);
+Materials.steel = new Material("steel",5,3);
+Materials.labor = new Material("labor",100,0.1);
 
 // Generic object for basic race route information
 var Route = {
   distance: 1900,
   unit: "miles",
-  contractDeposit: 2000000,
-  mileReward: 100
+  contractDeposit: 200000,
+  mileReward: 1000
 };
 
 
