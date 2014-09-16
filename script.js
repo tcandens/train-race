@@ -93,9 +93,9 @@ Order = function(array) {
 
 // Create material properties within object
 var Materials = new Object();
-Materials.wood = new Material("wood",5,100);
-Materials.steel = new Material("steel",10,50);
-Materials.labor = new Material("labor",100,0);
+Materials.wood = new Material("wood",5,10);
+Materials.steel = new Material("steel",10,5);
+Materials.labor = new Material("labor",100,0.002);
 
 // Create object for Race holding all major methods
 var Race = new Object();
@@ -131,43 +131,51 @@ Race.buildOpponent = function() {
   // Loop through the number of materials in Players supply
   for ( key in Player.supplies ) {
 
-    var supply = Player.supplies[key];
+    var playerSupply = Player.supplies[key];
+    var mat = Materials[key];
+    var rate = mat.consumptionRate;
+    var price = mat.price;
+    var unitPrice = rate * price;
+    var remaining = ( Route.distance * unitPrice ) - playerSupply
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
     var rand = Math.random();
 
-    console.log("Player has " + supply);
+    console.log("Player has " + remaining);
 
     // Build order array
+    // NOTICE: You are looping with for..in and then hacking around a lack of indeces and counter
+    // with the switch/case. There might be a better way of doing this without switching back and forth
+    //
     if ( plusMinus ) {
-      console.log("Plus!")
+      // console.log("Plus!")
       switch ( key ) {
         case "wood":
-          oppOrder[0] = Math.floor(supply * ( 1 + rand ));
+          oppOrder[0] = Math.floor(remaining * ( 1 + rand ));
           console.log(oppOrder[0])
           break;
         case 'steel':
-          oppOrder[1] = Math.floor(supply * ( 1 + rand ));
+          oppOrder[1] = Math.floor(remaining * ( 1 + rand ));
           console.log(oppOrder[1])
           break;
         case 'labor':
-          oppOrder[2] = Math.floor(supply * ( 1 + rand ));
+          oppOrder[2] = Math.floor(remaining * ( 1 + rand ));
           console.log(oppOrder[2])
           break;
       };
     } else {
-      console.log("Minus!");
+      // console.log("Minus!");
       switch ( key ) {
         case "wood":
-          oppOrder[0] = Math.floor(supply * ( 1 - rand ));
+          oppOrder[0] = Math.floor(remaining * ( 1 - rand ));
           console.log(oppOrder[0])
           break;
         case 'steel':
-          oppOrder[1] = Math.floor(supply * ( 1 - rand ));
+          oppOrder[1] = Math.floor(remaining * ( 1 - rand ));
           console.log(oppOrder[1])
           break;
         case 'labor':
-          oppOrder[2] = Math.floor(supply * ( 1 - rand ));
+          oppOrder[2] = Math.floor(remaining * ( 1 - rand ));
           console.log(oppOrder[2])
           break;
       };
@@ -177,9 +185,9 @@ Race.buildOpponent = function() {
   // Build order object from order array
   var order = new Order(oppOrder);
   // Submit order
-  console.log(oppOrder);
+  // console.log(oppOrder);
   Opponent.makeOrder(order);
-  console.log(Opponent.supplies);
+  // console.log(Opponent.supplies);
 };
 
 // Race method to check progress. Sum of players current miles
@@ -208,7 +216,7 @@ Race.run = function () {
 };
 
 Race.init = function () {
-  this.buildPlayer("Eastern", 1000,1200,10);
+  this.buildPlayer("Eastern", 10000,12000,100);
   this.buildOpponent();
   this.run();
 }
@@ -219,8 +227,8 @@ Race.init = function () {
 var Route = {
   distance: 1900,
   unit: "miles",
-  contractDeposit: 20000,
-  mileReward: 10
+  contractDeposit: 2000000,
+  mileReward: 100
 };
 
 
