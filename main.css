@@ -40,6 +40,15 @@ button {
 button.center {
   margin: 0 auto; }
 
+input {
+  width: auto;
+  height: 2em;
+  border-radius: 4px;
+  padding: 0.3em 1em;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid white; }
+
 /* Helper classes for toggling visibility */
 .visible {
   display: block;
