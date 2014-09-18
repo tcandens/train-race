@@ -1,0 +1,22 @@
+{
+  "name": "train-race",
+  "version": "0.0.0",
+  "homepage": "https://github.com/tcandens/train-race",
+  "authors": [
+    "tcandens <joey.thies@gmail.com>"
+  ],
+  "description": "A simple optimization strategy game",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bourbon": "~4.0.2",
+    "neat": "~1.6.0"
+  }
+}

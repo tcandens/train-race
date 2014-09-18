@@ -126,18 +126,18 @@ Race.buildOpponent = function() {
   // Select amount of supplies to order based on Players order plus/minus a randomized coeffient
   // Loop through the number of materials in Players supply
   for ( key in Player.supplies ) {
-
+    // How much of this material did the player buy
     var playerSupply = Player.supplies[key];
+    // What are the properties of this material
     var mat = Materials[key];
     var rate = mat.consumptionRate;
     var price = mat.price;
     var unitPrice = rate * price;
-    var remaining = ( Route.distance * unitPrice ) - playerSupply
+    // How much of this material is need to complete the route
+    var remainingMat = ( Route.distance * rate ) - playerSupply
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
     var rand = Math.random();
-
-    console.log("Player has " + remaining);
 
     // Build order array
     // NOTICE: You are looping with for..in and then hacking around a lack of indeces and counter
@@ -147,15 +147,15 @@ Race.buildOpponent = function() {
       // console.log("Plus!")
       switch ( key ) {
         case "wood":
-          oppOrder[0] = Math.floor(remaining * ( 1 + rand ));
+          oppOrder[0] = Math.floor(remainingMat * ( 1 + rand ));
           console.log(oppOrder[0])
           break;
         case 'steel':
-          oppOrder[1] = Math.floor(remaining * ( 1 + rand ));
+          oppOrder[1] = Math.floor(remainingMat * ( 1 + rand ));
           console.log(oppOrder[1])
           break;
         case 'labor':
-          oppOrder[2] = Math.floor(remaining * ( 1 + rand ));
+          oppOrder[2] = Math.floor(remainingMat * ( 1 + rand ));
           console.log(oppOrder[2])
           break;
       };
@@ -163,15 +163,15 @@ Race.buildOpponent = function() {
       // console.log("Minus!");
       switch ( key ) {
         case "wood":
-          oppOrder[0] = Math.floor(remaining * ( 1 - rand ));
+          oppOrder[0] = Math.floor(remainingMat * ( 1 - rand ));
           console.log(oppOrder[0])
           break;
         case 'steel':
-          oppOrder[1] = Math.floor(remaining * ( 1 - rand ));
+          oppOrder[1] = Math.floor(remainingMat * ( 1 - rand ));
           console.log(oppOrder[1])
           break;
         case 'labor':
-          oppOrder[2] = Math.floor(remaining * ( 1 - rand ));
+          oppOrder[2] = Math.floor(remainingMat * ( 1 - rand ));
           console.log(oppOrder[2])
           break;
       };
