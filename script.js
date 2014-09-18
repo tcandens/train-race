@@ -104,6 +104,15 @@ Order = function(array) {
   this.labor = array[2];
 }
 
+<<<<<<< HEAD
+=======
+// Create material properties within object
+var Materials = new Object();
+Materials.wood = new Material("wood",5,10);
+Materials.steel = new Material("steel",10,5);
+Materials.labor = new Material("labor",100,0.002);
+
+>>>>>>> optimization
 // Create object for Race holding all major methods
 var Race = new Object();
 
@@ -229,10 +238,14 @@ Race.run = function () {
 };
 
 Race.init = function () {
+<<<<<<< HEAD
   var wood = prompt("Wood?");
   var steel = prompt("Steel?");
   var labor = prompt("Labor?");
   this.buildPlayer("Eastern", wood,steel,labor);
+=======
+  this.buildPlayer("Eastern", 10000,12000,100);
+>>>>>>> optimization
   this.buildOpponent();
   this.run();
 }
@@ -248,6 +261,7 @@ Materials.labor = new Material("labor", 100, 0.5);
 var Route = {
   distance: 1900,
   unit: "miles",
+<<<<<<< HEAD
   contractDeposit: 200000,
   mileReward: 1000,
   laborBonus: 10,
@@ -265,6 +279,10 @@ var Route = {
     var totalPrice = woodPrice + steelPrice + laborPrice;
     console.log("TOTAL COST: " + totalPrice );
   }
+=======
+  contractDeposit: 2000000,
+  mileReward: 100
+>>>>>>> optimization
 };
 
 
