@@ -6,11 +6,8 @@ module.exports = function(grunt) {
     // Task configuration.
     watch: {
       sass: {
-        files: '**/*.scss',
-        tasks: ['sass'],
-        options: {
-          livereload: true,
-        }
+        files: ['**/*.scss'],
+        tasks: ['sass']
       }
     },
     sass: {
@@ -27,7 +24,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit']);
-  grunt.registerTask('watch', ['watch:sass']);
+  grunt.registerTask('default', ['sass']);
+  // grunt.registerTask('watch', ['watch:sass']);
 
 };

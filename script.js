@@ -73,8 +73,9 @@ Railway = function(name) {
   // For building one mile of track. First, checks if supplies are depleted
   this.buildMile = function() {
     if ( this.checkSupplies() ) {
-      if ( this.laborBonus > 0 ) {
+      if ( this.laborBonus > 0 && Race.progress() ) {
           this.currentMiles += this.laborBonus * Route.laborBonus;
+          this.laborBonus--;
       }
       for ( key in this.supplies ) {
         this.supplies[key] -= Materials[key].consumptionRate;
