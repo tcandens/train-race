@@ -2,6 +2,7 @@
 Railway = function(name) {
   this.name = name;
   this.currentMiles = 0;
+  this.laborBonus = 0;
   this.supplies = {
     wood: 0,
     steel: 0,
@@ -49,6 +50,7 @@ Railway = function(name) {
     // Assign supplies and subtract order
     this.adjustRevenue(-totalCost);
     this.setSupplies(orderObject);
+    this.assignBonus();
   };
 
   // Check to see if supplies are depleted
@@ -63,9 +65,19 @@ Railway = function(name) {
     };
   };
 
+  // Assign laborBonus based on the amount of labor purchased
+  this.assignBonus = function () {
+    this.laborBonus = this.supplies['labor'] / 50;
+  }
+
   // For building one mile of track. First, checks if supplies are depleted
   this.buildMile = function() {
     if ( this.checkSupplies() ) {
+      if ( this.laborBonus > 0 ) {
+        for ( i = 0; i < this.laborBonus; i++ ) {
+          this.currentMiles += this.laborBonus * Route.laborBonus;
+        }
+      }
       for ( key in this.supplies ) {
         this.supplies[key] -= Materials[key].consumptionRate;
       };
@@ -134,7 +146,10 @@ Race.buildOpponent = function() {
     var price = mat.price;
     var unitPrice = rate * price;
     // How much of this material is need to complete the route
-    var remainingMat = ( Route.distance * rate ) - playerSupply
+    var remainingMat = ( Route.distance * rate ) - playerSupply;
+    if ( remainingMat < 0 ) {
+      remainingMat = 0;
+    }
     // Switch that decides whether to increment up or down
     var plusMinus = Math.round(Math.random());
     var rand = Math.random();
@@ -223,16 +238,31 @@ Race.init = function () {
 // Create material properties within object
 // new Material(NAME, PRICE, RATE)
 var Materials = new Object();
-Materials.wood = new Material("wood",1,100);
-Materials.steel = new Material("steel",5,3);
-Materials.labor = new Material("labor",100,0.1);
+Materials.wood = new Material("wood", 1, 50);
+Materials.steel = new Material("steel", 5, 5);
+Materials.labor = new Material("labor", 100, 0.5);
 
 // Generic object for basic race route information
 var Route = {
   distance: 1900,
   unit: "miles",
   contractDeposit: 200000,
-  mileReward: 1000
+  mileReward: 1000,
+  laborBonus: 500,
+  reportNeeds: function() {
+    var wood = Materials.wood.consumptionRate * this.distance;
+    var woodPrice = wood * Materials.wood.price;
+    var steel = Materials.steel.consumptionRate * this.distance;
+    var steelPrice = steel * Materials.steel.price;
+    var labor = Materials.labor.consumptionRate * this.distance;
+    var laborPrice = labor * Materials.labor.price;
+    console.log("Route Requires");
+    console.log("wood: " + wood + " @ " + woodPrice );
+    console.log("steel: " + steel + " @ " + steelPrice );
+    console.log("labor: " + labor + " @ " + laborPrice );
+    var totalPrice = woodPrice + steelPrice + laborPrice;
+    console.log("TOTAL COST: " + totalPrice );
+  }
 };
 
 
