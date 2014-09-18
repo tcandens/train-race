@@ -74,9 +74,7 @@ Railway = function(name) {
   this.buildMile = function() {
     if ( this.checkSupplies() ) {
       if ( this.laborBonus > 0 ) {
-        for ( i = 0; i < this.laborBonus; i++ ) {
           this.currentMiles += this.laborBonus * Route.laborBonus;
-        }
       }
       for ( key in this.supplies ) {
         this.supplies[key] -= Materials[key].consumptionRate;
@@ -147,7 +145,10 @@ Race.buildOpponent = function() {
     var unitPrice = rate * price;
     // How much of this material is need to complete the route
     var remainingMat = ( Route.distance * rate ) - playerSupply;
-    if ( remainingMat < 0 ) {
+    var reasonableAmt = ( Route.distance * rate ) / 2;
+    if ( remainingMat > reasonableAmt ) {
+      remainingMat = reasonableAmt;
+    } else if ( remainingMat < 0 ) {
       remainingMat = 0;
     }
     // Switch that decides whether to increment up or down
@@ -248,7 +249,7 @@ var Route = {
   unit: "miles",
   contractDeposit: 200000,
   mileReward: 1000,
-  laborBonus: 500,
+  laborBonus: 10,
   reportNeeds: function() {
     var wood = Materials.wood.consumptionRate * this.distance;
     var woodPrice = wood * Materials.wood.price;
