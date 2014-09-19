@@ -231,6 +231,7 @@ Race.run = function () {
 
 };
 
+// Broken
 Race.init = function (wood, steel, labor) {
   this.buildPlayer("Eastern", wood,steel,labor);
   this.buildOpponent();
@@ -273,6 +274,12 @@ var Route = {
 $( function () {
   // Onload shortcut
 
+  // Hide / Show
+  $('#order').hide();
+  $('#results').hide();
+  $('#intro').hide().fadeIn();
+
+
   // Populate Info Table
   $('#deposit').html( "$" + Route.contractDeposit );
 
@@ -297,21 +304,22 @@ $( function () {
   $('#labor-mile').html( Materials.labor.consumptionRate );
 
   // Grab Values from order form
-  var $woodInput = $('#wood-input');
-  var $steelInput = $('#steel-input');
-  var $laborInput = $('#labor-input');
+  var woodInput = $('#wood-input');
+  var steelInput = $('#steel-input');
+  var laborInput = $('#labor-input');
 
   // Reset values if over maximums
-  $woodInput.on('blur', function() {
+  woodInput.on('blur', function() {
     if ( !$.isNumeric($(this).val()) ) {
       alert("Integer values only, please!");
       $(this).val('');
     } else if ( $(this).val() > Materials.wood.routeNeeded ) {
       $(this).val( Materials.wood.routeNeeded );
     }
+    console.log( typeof $(this).val() );
   });
 
-  $steelInput.on('blur', function() {
+  steelInput.on('blur', function() {
     if ( !$.isNumeric($(this).val()) ) {
       alert("Integer values only, please!");
       $(this).val('');
@@ -320,7 +328,7 @@ $( function () {
     }
   });
 
-  $laborInput.on('blur', function() {
+  laborInput.on('blur', function() {
     if ( !$.isNumeric($(this).val()) ) {
       alert("Integer values only, please!");
       $(this).val('');
@@ -329,23 +337,21 @@ $( function () {
     }
   });
 
-  var w = $woodInput.val();
-  var s = $steelInput.val();
-  var l = $laborInput.val();
+  var $orderForm = $("#order-form");
 
-  var $formSubmit = $("#order-submit");
-
-  $formSubmit.on('click', function(e) {
+  $orderForm.on('submit', function(e) {
     e.preventDefault();
-    Race.init(w, s, l);
+    Race.buildPlayer("J", woodInput.val(), steelInput.val(), laborInput.val());
+    Race.buildOpponent();
+    Race.run();
   });
 
+// Set panel switching
 
-  // First, set maximums
-  // console.log(woodInput.val());
-
-  $('#confirm-section-one').on('click', function() {
-    $('#intro').fadeOut();
+  $('#confirm-section-one').on('click', function(e) {
+    e.preventDefault();
+    $('#intro').fadeOut(400);
+    $('#order').delay(400).fadeIn();
   });
 
 

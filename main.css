@@ -45,20 +45,20 @@ p {
   margin-bottom: 0.5em; }
 
 /* Button classes */
-button {
-  display: block;
+.button {
+  display: inline-block;
   padding: 0.2em 0.5em;
   font: 1.2em/1 "Lato", sans-serif;
   color: coral;
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid coral;
   border-radius: 1em; }
-  button:hover {
+  .button:hover {
     border: 2px solid white;
     background: rgba(0, 0, 0, 0.2);
     color: white; }
 
-button.center {
+.button.center {
   margin: 0 auto; }
 
 .container {
@@ -66,6 +66,7 @@ button.center {
   max-width: 100%; }
 
 #order-form {
+  display: inline-block;
   margin: 0 auto; }
 
 input {
@@ -83,7 +84,6 @@ input {
   border: 1px solid white; }
 
 #order-submit {
-  clear: both;
   width: 12em; }
 
 .mile-supplies {
@@ -109,8 +109,7 @@ input {
   margin: 0 0 1em 0; }
   #price-table th {
     font-family: "Noticia Text", serif;
-    color: rgba(255, 255, 255, 0.8);
-    border-bottom: 1px dashed white; }
+    color: rgba(255, 255, 255, 0.8); }
   #price-table td {
     text-align: center; }
   #price-table tr:nth-child(even) {
