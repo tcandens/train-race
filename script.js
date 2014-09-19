@@ -40,9 +40,9 @@ Railway = function(name) {
           // Increment order amount down by unit or rate
           orderObject[key] -= Materials[key].consumptionRate;
           // console.log(orderObject[key]);
-          totalCost -= Materials[key].price;
+          totalCost -= Materials[key].price * Materials[key].consumptionRate;
           // console.log(totalCost);
-        } else if ( orderObject[key] == 0 ) {
+        } else if ( orderObject[key] <= 0 ) {
           orderObject[key] = 0;
         };
       };
@@ -73,7 +73,7 @@ Railway = function(name) {
   // For building one mile of track. First, checks if supplies are depleted
   this.buildMile = function() {
     if ( this.checkSupplies() ) {
-      if ( this.laborBonus > 0 && Race.progress() ) {
+      if ( this.laborBonus > 0 && Race.progress() < Route.distance ) {
           this.currentMiles += this.laborBonus * Route.laborBonus;
           this.laborBonus--;
       }
@@ -96,7 +96,7 @@ Material = function(name, price, consumptionRate) {
   this.price = price; // Price per unit
   this.consumptionRate = consumptionRate; // The amount of material needed to build one mile of track
   this.unitPrice = this.consumptionRate * this.price;
-  this.routeNeeded = 1900 / this.consumptionRate;
+  this.routeNeeded = 1900 * this.consumptionRate;
   this.routePrice = this.unitPrice * 1900;
 };
 
@@ -231,20 +231,17 @@ Race.run = function () {
 
 };
 
-Race.init = function () {
-  var wood = prompt("Wood?");
-  var steel = prompt("Steel?");
-  var labor = prompt("Labor?");
+Race.init = function (wood, steel, labor) {
   this.buildPlayer("Eastern", wood,steel,labor);
   this.buildOpponent();
   this.run();
 }
 
 // Create material properties within object
-// new Material(NAME, PRICE, RATE)
+// new Material(NAME, PRICE, RATEperMILE)
 var Materials = new Object();
 Materials.wood = new Material("wood", 1, 50);
-Materials.steel = new Material("steel", 5, 5);
+Materials.steel = new Material("steel", 5, 10);
 Materials.labor = new Material("labor", 100, 0.5);
 
 // Generic object for basic race route information
@@ -275,8 +272,8 @@ var Route = {
 // -----------------------------
 $( function () {
   // Onload shortcut
-  // Populate Info Table
 
+  // Populate Info Table
   $('#deposit').html( "$" + Route.contractDeposit );
 
   var woodData = $('#wood-data');
@@ -289,7 +286,7 @@ $( function () {
   steelData.find('.needed').html( Materials.steel.routeNeeded );
   steelData.find('.total-price').html( "$" + Materials.steel.routePrice );
 
-  var laborData = $('labor-data');
+  var laborData = $('#labor-data');
   laborData.find('.price').html( "$" + Materials.labor.unitPrice );
   laborData.find('.needed').html( Materials.labor.routeNeeded );
   laborData.find('.total-price').html( "$" + Materials.labor.routePrice );
@@ -300,15 +297,56 @@ $( function () {
   $('#labor-mile').html( Materials.labor.consumptionRate );
 
   // Grab Values from order form
-  var woodInput = $('#wood-input');
-  var steelInput = $('#steel-input');
-  var laborInput = $('#labor-input');
+  var $woodInput = $('#wood-input');
+  var $steelInput = $('#steel-input');
+  var $laborInput = $('#labor-input');
 
-  var formSubmit = $("#order-submit");
+  // Reset values if over maximums
+  $woodInput.on('blur', function() {
+    if ( !$.isNumeric($(this).val()) ) {
+      alert("Integer values only, please!");
+      $(this).val('');
+    } else if ( $(this).val() > Materials.wood.routeNeeded ) {
+      $(this).val( Materials.wood.routeNeeded );
+    }
+  });
+
+  $steelInput.on('blur', function() {
+    if ( !$.isNumeric($(this).val()) ) {
+      alert("Integer values only, please!");
+      $(this).val('');
+    } else if ( $(this).val() > Materials.steel.routeNeeded ) {
+      $(this).val( Materials.steel.routeNeeded );
+    }
+  });
+
+  $laborInput.on('blur', function() {
+    if ( !$.isNumeric($(this).val()) ) {
+      alert("Integer values only, please!");
+      $(this).val('');
+    } else if ( $(this).val() > Materials.labor.routeNeeded ) {
+      $(this).val( Materials.labor.routeNeeded );
+    }
+  });
+
+  var w = $woodInput.val();
+  var s = $steelInput.val();
+  var l = $laborInput.val();
+
+  var $formSubmit = $("#order-submit");
+
+  $formSubmit.on('click', function(e) {
+    e.preventDefault();
+    Race.init(w, s, l);
+  });
+
 
   // First, set maximums
-  console.log(woodInput.val());
+  // console.log(woodInput.val());
 
+  $('#confirm-section-one').on('click', function() {
+    $('#intro').fadeOut();
+  });
 
 
 

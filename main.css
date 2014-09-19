@@ -72,7 +72,8 @@ input {
   text-align: center;
   float: left;
   clear: none;
-  width: 4em;
+  margin: 12px;
+  width: 100;
   height: 2em;
   font-size: 1em;
   border-radius: 0em;
