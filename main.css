@@ -50,9 +50,13 @@ button {
   padding: 0.2em 0.5em;
   font: 1.2em/1 "Lato", sans-serif;
   color: coral;
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
   border: 2px solid coral;
   border-radius: 1em; }
+  button:hover {
+    border: 2px solid white;
+    background: rgba(0, 0, 0, 0.2);
+    color: white; }
 
 button.center {
   margin: 0 auto; }
