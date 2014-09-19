@@ -95,6 +95,9 @@ Material = function(name, price, consumptionRate) {
   this.name = name;
   this.price = price; // Price per unit
   this.consumptionRate = consumptionRate; // The amount of material needed to build one mile of track
+  this.unitPrice = this.consumptionRate * this.price;
+  this.routeNeeded = 1900 / this.consumptionRate;
+  this.routePrice = this.unitPrice * 1900;
 };
 
 // Generic order with an indexed array passes as an argument
@@ -104,15 +107,6 @@ Order = function(array) {
   this.labor = array[2];
 }
 
-<<<<<<< HEAD
-=======
-// Create material properties within object
-var Materials = new Object();
-Materials.wood = new Material("wood",5,10);
-Materials.steel = new Material("steel",10,5);
-Materials.labor = new Material("labor",100,0.002);
-
->>>>>>> optimization
 // Create object for Race holding all major methods
 var Race = new Object();
 
@@ -238,14 +232,10 @@ Race.run = function () {
 };
 
 Race.init = function () {
-<<<<<<< HEAD
   var wood = prompt("Wood?");
   var steel = prompt("Steel?");
   var labor = prompt("Labor?");
   this.buildPlayer("Eastern", wood,steel,labor);
-=======
-  this.buildPlayer("Eastern", 10000,12000,100);
->>>>>>> optimization
   this.buildOpponent();
   this.run();
 }
@@ -261,7 +251,6 @@ Materials.labor = new Material("labor", 100, 0.5);
 var Route = {
   distance: 1900,
   unit: "miles",
-<<<<<<< HEAD
   contractDeposit: 200000,
   mileReward: 1000,
   laborBonus: 10,
@@ -279,13 +268,49 @@ var Route = {
     var totalPrice = woodPrice + steelPrice + laborPrice;
     console.log("TOTAL COST: " + totalPrice );
   }
-=======
-  contractDeposit: 2000000,
-  mileReward: 100
->>>>>>> optimization
 };
 
 
-// Create Object to reference HTML elements and Classes
-// Assets{}...
-var Assets = new Object();
+// BEGIN DOM/JQUERY MANIPULATION
+// -----------------------------
+$( function () {
+  // Onload shortcut
+  // Populate Info Table
+
+  $('#deposit').html( "$" + Route.contractDeposit );
+
+  var woodData = $('#wood-data');
+  woodData.find('.price').html( "$" + Materials.wood.unitPrice );
+  woodData.find('.needed').html( Materials.wood.routeNeeded );
+  woodData.find('.total-price').html( "$" + Materials.wood.routePrice );
+
+  var steelData = $('#steel-data');
+  steelData.find('.price').html( "$" + Materials.steel.unitPrice );
+  steelData.find('.needed').html( Materials.steel.routeNeeded );
+  steelData.find('.total-price').html( "$" + Materials.steel.routePrice );
+
+  var laborData = $('labor-data');
+  laborData.find('.price').html( "$" + Materials.labor.unitPrice );
+  laborData.find('.needed').html( Materials.labor.routeNeeded );
+  laborData.find('.total-price').html( "$" + Materials.labor.routePrice );
+
+  // Populate Mile Requirements
+  $('#wood-mile').html( Materials.wood.consumptionRate );
+  $('#steel-mile').html( Materials.steel.consumptionRate );
+  $('#labor-mile').html( Materials.labor.consumptionRate );
+
+  // Grab Values from order form
+  var woodInput = $('#wood-input');
+  var steelInput = $('#steel-input');
+  var laborInput = $('#labor-input');
+
+  var formSubmit = $("#order-submit");
+
+  // First, set maximums
+  console.log(woodInput.val());
+
+
+
+
+
+});

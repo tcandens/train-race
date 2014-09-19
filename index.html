@@ -16,17 +16,57 @@
 
       <section id="order" class="visible">
         <h1>Supply Your Company</h1>
-        <p></p>
+        <p>Both you and your rival have been given a contract deposit of <span id="deposit">$200000</span> that you must use
+          to purchase supplies. Each mile of track requires...
+          <ul class="mile-supplies">
+            <li><em id="wood-mile">50</em> wood</li>
+            <li><em id="steel-mile">5</em> steel</li>
+            <li><em id="labor-mile">10</em> men</li>
+            <li class="reward"><em id="reward-amt">$1000</em> reward</li>
+          </ul>
+          ...to cover the route's <span id="total-distance"><em id="distance-miles">1900</em> miles</span> it will cost...
+        </p>
+        <table id="price-table">
+          <tr>
+            <th>Material</th>
+            <th>Unit Price</th>
+            <th>Total Needed</th>
+            <th>Total Price</th>
+          </tr>
+          <tr id="wood-data" class="row">
+            <td class="name">Wood</td>
+            <td class="price">$50</td>
+            <td class="needed">40000</td>
+            <td class="total-price">$190000</td>
+          </tr>
+          <tr id="steel-data" class="row">
+            <td class="name">Steel</td>
+            <td class="price">$50</td>
+            <td class="needed">40000</td>
+            <td class="total-price">$190000</td>
+          </tr>
+          <tr id="labor-data" class="row">
+            <td class="name">Labor</td>
+            <td class="price">$50</td>
+            <td class="needed">40000</td>
+            <td class="total-price">$190000</td>
+          </tr>
+          <tr></tr>
+        </table>
         <div class="container">
-          <form action="post">
+          <form id="order-form" action="post">
             <input id="wood-input" name="wood" type="number" min="0" step="100" placeholder="Amount of Wood">
             <input id="steel-input" name="steel" type="number" min="0" step="3" placeholder="Amount of Steel">
             <input id="labor-input" name="labor" type="number" min="0" step="10" placeholder="Number of Men">
-            <input type="submit">
+            <input id="order-submit" type="submit">
           </form>
         </div>
-
       </section>
+
+      <section id="results" class="visible">
+        <h1>Check the Map</h1>
+      </section>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
   </body>
