@@ -294,8 +294,8 @@ $( function () {
   // Onload shortcut
 
   // Hide / Show
-  // $('#order').hide();
-  // $('#results').hide();
+  $('#order').hide();
+  $('#results').hide();
   $('#intro').hide().fadeIn();
 
 
