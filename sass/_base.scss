@@ -139,6 +139,40 @@ input {
   }
 }
 
+// Result Tables
+.results {
+  display: inline-block;
+  width: 45%;
+  padding: 0.3em;
+  margin-top: -3em;
+  float: left;
+  // padding: 1em;
+  &:nth-child(odd) {
+    margin-left: 1em;
+  }
+  .order ul {
+    @extend .mile-supplies;
+    font-size: 0.6em;
+  }
+}
+.win-title {
+  font: 0.5em/1 'Lato', sans-serif;
+  font-weight: 100;
+  margin: 0.5em;
+  padding: 0.5em;
+  vertical-align: top;
+  background-color: rgba(0, 100, 30, 0.7);
+  border-radius: 1em;
+  border: 2px solid rgba(0,100,30,1);
+}
+.revenue {
+  font: 2em/1 "Noticia Text", serif;
+  margin: 0.2em 0 0.2em 0;
+  text-align: center;
+  color: rgba(100, 100, 0, 1);
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
+}
+
 /* Helper classes for toggling visibility */
 .visible {
   display: block;

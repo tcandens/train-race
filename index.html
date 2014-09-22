@@ -55,16 +55,41 @@
         </table>
         <div class="container">
           <form id="order-form">
-            <input id="wood-input" name="wood" type="number" min="0" step="100" placeholder="Amount of Wood">
-            <input id="steel-input" name="steel" type="number" min="0" step="5" placeholder="Amount of Steel">
-            <input id="labor-input" name="labor" type="number" min="0" step="10" placeholder="Number of Men">
+            <input id="wood-input" name="wood" type="number" min="0" step="1" placeholder="Amount of Wood">
+            <input id="steel-input" name="steel" type="number" min="0" step="1" placeholder="Amount of Steel">
+            <input id="labor-input" name="labor" type="number" min="0" step="1" placeholder="Number of Men">
             <input id="order-submit" type="submit" value="Make Order">
           </form>
         </div>
       </section>
 
       <section id="results">
-        <h1>Check the Map</h1>
+        <h1>How did you do?</h1>
+        <div id="opponent-results" class="results">
+          <h2>Rival Railway</h2>
+          <div class="order">
+            <ul>
+              <li class="wood">Wood</li>
+              <li class="steel">Steel</li>
+              <li class="labor">Men</li>
+            </ul>
+            <h3 class="revenue">$</h3>
+            <h3 class="miles">3000</h3>
+          </div>
+        </div>
+
+        <div id="player-results" class="results">
+          <h2>Your Railway</h2>
+          <div class="order">
+            <ul>
+              <li class="wood">Wood</li>
+              <li class="steel">Steel</li>
+              <li class="labor">Men</li>
+            </ul>
+            <h3 class="revenue">$</h3>
+            <h3 class="miles">3000</h3>
+          </div>
+        </div>
       </section>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

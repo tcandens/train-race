@@ -8,6 +8,11 @@ Railway = function(name) {
     steel: 0,
     labor: 0,
   };
+  this.order = {
+    wood: 0,
+    steel: 0,
+    labor: 0
+  };
   this.revenue = 0;
   // Method the adjusts the players mile count and progress
   this.adjustMiles = function(amount) {
@@ -20,8 +25,11 @@ Railway = function(name) {
   // Initializes company supply stock, and can then be reused
   this.setSupplies = function(orderObject) {
     this.supplies.wood = orderObject['wood'];
+    this.order.wood = orderObject['wood'];
     this.supplies.steel = orderObject['steel'];
+    this.order.steel = orderObject['steel'];
     this.supplies.labor = orderObject['labor'];
+    this.order.labor = orderObject['labor'];
   };
   // Method for making orders that check if total cost of order exceeds available revenue
   // And then increments each order item down until cost is met
@@ -231,6 +239,16 @@ Race.run = function () {
 
 };
 
+Race.declareWinner = function () {
+  var winner;
+  if ( Player.revenue > Opponent.revenue ) {
+    winner = "player";
+  } else if ( Opponent.revenue > Player.revenue ) {
+    winner = "opponent";
+  };
+  return winner;
+};
+
 // Broken
 Race.init = function (wood, steel, labor) {
   this.buildPlayer("Eastern", wood,steel,labor);
@@ -272,11 +290,12 @@ var Route = {
 // BEGIN DOM/JQUERY MANIPULATION
 // -----------------------------
 $( function () {
+
   // Onload shortcut
 
   // Hide / Show
-  $('#order').hide();
-  $('#results').hide();
+  // $('#order').hide();
+  // $('#results').hide();
   $('#intro').hide().fadeIn();
 
 
@@ -308,6 +327,11 @@ $( function () {
   var steelInput = $('#steel-input');
   var laborInput = $('#labor-input');
 
+  // Set input steps
+  woodInput.attr('step', Materials.wood.consumptionRate );
+  steelInput.attr('step', Materials.steel.consumptionRate );
+  laborInput.attr('step', Materials.steel.consumptionRate );
+
   // Reset values if over maximums
   woodInput.on('blur', function() {
     if ( !$.isNumeric($(this).val()) ) {
@@ -337,6 +361,42 @@ $( function () {
     }
   });
 
+  // Fill in results
+
+  var fillResults = function () {
+
+    // Populate original order
+    var $opponentResults = $('#opponent-results');
+    $opponentResults.find('.wood').html(Opponent.order.wood + " Wood");
+    $opponentResults.find('.steel').html(Opponent.order.steel + " Steel");
+    $opponentResults.find('.labor').html(Opponent.order.labor + " Men");
+
+    $opponentResults.find('.revenue').html("$" + Opponent.revenue);
+    $opponentResults.find('.miles').html(Opponent.currentMiles + " " + Route.unit );
+
+
+    var $playerResults = $('#player-results');
+    $playerResults.find('.wood').html(Player.order.wood + " Wood");
+    $playerResults.find('.steel').html(Player.order.steel + " Steel");
+    $playerResults.find('.labor').html(Player.order.labor + " Men");
+
+    $playerResults.find('.revenue').html("$" + Player.revenue);
+    $playerResults.find('.miles').html(Player.currentMiles + " " + Route.unit );
+
+    // WINNER!
+
+    if ( Race.declareWinner() == "player" ) {
+      $playerResults.find('h2').append('<span class="win-title">Winner!</span>');
+      $playerResults.addClass('winner');
+    } else if ( Race.declareWinner() == "opponent" ) {
+      $opponentResults.find('h2').append('<span class="win-title">Winner!</span');
+      $opponentResults.addClass('winner');
+    } else {
+      console.log("Buh");
+    };
+
+  };
+
   var $orderForm = $("#order-form");
 
   $orderForm.on('submit', function(e) {
@@ -344,6 +404,9 @@ $( function () {
     Race.buildPlayer("J", woodInput.val(), steelInput.val(), laborInput.val());
     Race.buildOpponent();
     Race.run();
+    fillResults();
+    $('#order').fadeOut(400);
+    $('#results').delay(400).fadeIn(400);
   });
 
 // Set panel switching
@@ -355,6 +418,7 @@ $( function () {
   });
 
 
+  $
 
 
 });
